@@ -28,10 +28,10 @@ def select_marker():
 	player1 = input("Player 1: Do you want to be 'X' or 'O' : ")
 
 	# Check if user selection is valid
-	while player1 != 'X' and player1 != 'O':
+	while player1 != 'X' and player1 != 'x' and player1 != 'O' and player1 != 'o':
 		player1 = input("Please pick a valid marker 'X' or 'O' : ")
 
-	return player1
+	return player1.upper()
 
 def place_marker(board, marker, position):
 	# Place the marker at position on the board
@@ -67,19 +67,93 @@ def check_win(board):
 	else:
 		return False, ''
 
+def choose_move(board):
+	# Let player choose position to play next
+	position = int(input('Choose your next position: (1-9) '))
 
+	# Check for out of range positions
+	while position < 1 or position > 9:
+		position = int(input('Choice out of range: (1-9) '))
 
-print('Welcome to my Tic-Tac-Toe game!')
-player1 = select_marker()
-print(f'Player 1 has selected : {player1}')
-rand_player()
-#test_board = ['#','X','O','X','O','X','O','X','O','X']
-test_board = ['#','X','O',' ',' ','O',' ',' ','O','X']
-display_board(test_board)
-win, who_win = check_win(test_board)
-if win:
-	print(f'{who_win} has won!')
-else:
-	print('No one has won.')
-#test_board = place_marker(test_board, '$', 8)
-#display_board(test_board)
+	# Check if position is already taken
+	while board[position] in ['X','O']:
+		position = int(input('Position is already taken. Choose another : (1-9) '))
+		# Check if new position is out of range
+		while position < 1 or position > 9:
+			position = int(input('Choice out of range: (1-9) '))
+
+	return position
+
+def full_board(board):
+	return not ' ' in board
+
+def replay():
+	# Let players decide if they want to play again
+	play = input('Do you want to play again? Enter Yes or No: ')
+
+	# Check for a valid answer
+	while play.lower() != 'yes' and play.lower() != 'no':
+		play = input('Do you want to play again? Enter Yes or No: ')
+
+	# Return players' choice
+	return play.lower() == 'yes'
+
+#################################################################################
+
+# main program
+while True:
+	print('Welcome to my Tic-Tac-Toe game!')
+
+	# Allow first player to decide which marker they want
+	player1 = select_marker()
+
+	# Assign other marker to second player
+	if player1 == 'X':
+		player2 = 'O'
+	else:
+		player2 = 'X'
+
+	#rand_player()
+
+	# Initial game setup
+	win = False
+	marker_count = 0
+	test_board = ['#',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+	display_board(test_board)
+
+	# Playing the game
+	while not win:
+
+		# Let player choose move
+		position = choose_move(test_board)
+
+		# Fill the board with alternating X and O at player's choice of position
+		if marker_count%2 == 0:
+			test_board = place_marker(test_board, player1, position)
+		else:
+			test_board = place_marker(test_board, player2, position)
+
+		# Check if anyone has won the game
+		win, who_win = check_win(test_board)
+
+		# Alternate the marker counter
+		marker_count += 1
+
+		# Display board every turn
+		display_board(test_board)
+
+		# End game if board is full
+		if full_board(test_board):
+			break
+
+	# Tell players who has won the game
+	if win:
+		print(f'Congratulations! {who_win} has won the game!')
+	else:
+		print('No one has won.')
+
+	# End game or replay
+	if not replay():
+		break
+print('Thank you for playing!')
+#################################################################################
