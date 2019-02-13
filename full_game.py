@@ -34,6 +34,22 @@ def display_board(board):
 	print(board_patterns[0] + '\n' + board_patterns[3] + '\n' + board_patterns[0] + '\n' + board_patterns[1])
 	print(board_patterns[0] + '\n' + board_patterns[4] + '\n' + board_patterns[0])
 
+def select_marker():
+	player1 = input("Please pick a marker 'X' or 'O' : ")
+
+	# Check if user selection is valid
+	while player1 != 'X' and player1 != 'O':
+		player1 = input("Please pick a valid marker 'X' or 'O' : ")
+
+	return player1
+
+def place_marker(board, marker, position):
+	board[position] = marker
+	return board
 
 test_board = ['#','X','O','X','O','X','O','X','O','X']
 display_board(test_board)
+test_board = place_marker(test_board, '$', 7)
+display_board(test_board)
+#player1 = select_marker()
+#print(f'Player1 has selected : {player1}')
