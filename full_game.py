@@ -4,8 +4,6 @@
 # This will be the Tic-Tac-Toe Game
 # Still learning OOP with Python
 
-#from IPython.display import clear_output
-#import time
 from random import randint
 
 def display_board(board):
@@ -55,9 +53,14 @@ def check_win(board):
 	o_win = ['O','O','O']
 
 	# Create winning possibilities on board -- total 8
-	win_list = [[board[7],board[5],board[3]],[board[1],board[5],board[9]],
-	[board[7],board[8],board[9]],[board[4],board[5],board[6]],[board[1],board[2],board[3]],
-	[board[7],board[4],board[1]],[board[8],board[5],board[2]],[board[9],board[6],board[3]]]
+	win_list = [[board[7],board[5],board[3]],
+	[board[1],board[5],board[9]],
+	[board[7],board[8],board[9]],
+	[board[4],board[5],board[6]],
+	[board[1],board[2],board[3]],
+	[board[7],board[4],board[1]],
+	[board[8],board[5],board[2]],
+	[board[9],board[6],board[3]]]
 
 	# Determine if there is a winner of the game
 	if x_win in win_list:
@@ -68,20 +71,9 @@ def check_win(board):
 		return False, ''
 
 def choose_move(board):
-	# Let player choose position to play next
-	position = int(input('Choose your next position: (1-9) '))
-
-	# Check for out of range positions
-	while position < 1 or position > 9:
-		position = int(input('Choice out of range: (1-9) '))
-
-	# Check if position is already taken
-	while board[position] in ['X','O']:
-		position = int(input('Position is already taken. Choose another : (1-9) '))
-		# Check if new position is out of range
-		while position < 1 or position > 9:
-			position = int(input('Choice out of range: (1-9) '))
-
+	position = 0
+	while position not in range(1,10) or board[position] in ('X','O'):
+		position = int(input('Choose your next position: (1-9) '))
 	return position
 
 def full_board(board):
@@ -156,4 +148,5 @@ while True:
 	if not replay():
 		break
 print('Thank you for playing!')
+
 #################################################################################
